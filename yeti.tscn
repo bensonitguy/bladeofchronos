@@ -1,0 +1,122 @@
+[gd_scene load_steps=21 format=3 uid="uid://c1wheyqepdwct"]
+
+[ext_resource type="Script" path="res://yeti.gd" id="1_8mmem"]
+[ext_resource type="Texture2D" uid="uid://1ia85mdyco1l" path="res://Assets/Enemies/yeti/yeti-1.png" id="1_rom11"]
+[ext_resource type="Texture2D" uid="uid://d10tk3t1qyj" path="res://Assets/Enemies/enemy-death/enemy-death-1.png" id="2_ku7vj"]
+[ext_resource type="Texture2D" uid="uid://k02b17pq3t54" path="res://Assets/Enemies/yeti/yeti-2.png" id="2_lsqco"]
+[ext_resource type="Texture2D" uid="uid://c42fwpxnwrutu" path="res://Assets/Enemies/yeti/yeti-3.png" id="3_c5wsu"]
+[ext_resource type="Texture2D" uid="uid://b8r1xgb0ly0uw" path="res://Assets/Enemies/enemy-death/enemy-death-2.png" id="3_np5kn"]
+[ext_resource type="Texture2D" uid="uid://lrnh785m54s" path="res://Assets/Enemies/enemy-death/enemy-death-3.png" id="4_ijkas"]
+[ext_resource type="Texture2D" uid="uid://bpqhewmy3wsch" path="res://Assets/Enemies/yeti/yeti-4.png" id="4_st50x"]
+[ext_resource type="Texture2D" uid="uid://2h0gpxvp57rl" path="res://Assets/Enemies/yeti/yeti-5.png" id="5_emfg6"]
+[ext_resource type="Texture2D" uid="uid://dsa4tsqq06xv3" path="res://Assets/Enemies/enemy-death/enemy-death-4.png" id="5_lnhln"]
+[ext_resource type="Texture2D" uid="uid://caivtp035pl5r" path="res://Assets/Enemies/yeti/yeti-6.png" id="6_7lm3a"]
+[ext_resource type="Texture2D" uid="uid://4kxnvwcxurso" path="res://Assets/Enemies/enemy-death/enemy-death-5.png" id="6_8mtc4"]
+[ext_resource type="Texture2D" uid="uid://b2uxgios2h6wv" path="res://Assets/Enemies/yeti/yeti-7.png" id="7_4ec1i"]
+[ext_resource type="Texture2D" uid="uid://dfm3lactabp8w" path="res://Assets/Enemies/enemy-death/enemy-death-6.png" id="7_4ubk7"]
+[ext_resource type="Texture2D" uid="uid://don7bqu6shau2" path="res://Assets/Enemies/enemy-death/enemy-death-7.png" id="8_dfp3a"]
+[ext_resource type="Texture2D" uid="uid://cben4tuvd3nc0" path="res://Assets/Enemies/yeti/yeti-8.png" id="8_tl5ol"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_37jl2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ku7vj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_np5kn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ijkas")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_lnhln")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_8mtc4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_4ubk7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_dfp3a")
+}],
+"loop": false,
+"name": &"Death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_lsqco")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_rom11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_lsqco")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_c5wsu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_st50x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_emfg6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_7lm3a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_4ec1i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_tl5ol")
+}],
+"loop": true,
+"name": &"Patrol",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jo1mu"]
+radius = 30.0
+height = 94.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1ovj8"]
+radius = 269.002
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e8e8d"]
+size = Vector2(72, 80)
+
+[node name="yeti" type="CharacterBody2D" groups=["enemy_group"]]
+script = ExtResource("1_8mmem")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(2.625, -0.874998)
+scale = Vector2(2.47857, 2.7803)
+sprite_frames = SubResource("SpriteFrames_37jl2")
+animation = &"Idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_jo1mu")
+
+[node name="Playerdetection" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Playerdetection"]
+visible = false
+shape = SubResource("CircleShape2D_1ovj8")
+
+[node name="PlayerDeath" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDeath"]
+position = Vector2(1, 5)
+shape = SubResource("RectangleShape2D_e8e8d")
+
+[connection signal="body_entered" from="Playerdetection" to="." method="_on_playerdetection_body_entered"]
+[connection signal="body_exited" from="Playerdetection" to="." method="_on_playerdetection_body_exited"]
+[connection signal="body_entered" from="PlayerDeath" to="." method="_on_player_death_body_entered"]
